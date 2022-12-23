@@ -1,34 +1,26 @@
 
-# Aries JavaScript Media Sharing plug-in
+# Aries JavaScript Message Receipts plug-in
 
-This module is used to provide an Aries Agent built with Aries Framework JavaScript means to manage [Media Sharing protocol](https://github.com/2060-io/aries-rfcs/tree/feature/media-sharing/features/xxxx-media-sharing).
+This module is used to provide an Aries Agent built with Aries Framework JavaScript means to manage [Message Receipts protocol](https://github.com/2060-io/aries-rfcs/tree/feature/receipts/features/xxxx-receipts).
 
 It's conceived as a plug-in for Aries Framework JavaScript which can be injected to an existing agent instance:
 
 ```ts
-import { MediaSharingModule } from '@2060-agent-sdk/media-sharing'
+import { ReceiptsModule } from 'aries-javascript-receipts'
 
 
 const agent = new Agent({
     config: { /* agent config */
     },
     dependencies,
-    modules: { media: new MediaSharingModule() },
+    modules: { receipts: new ReceiptsModule() },
 })
 
 
 ```
 
-Once instantiated, media module API can be accessed under `agent.modules.media` namespace
+Once instantiated, media module API can be accessed under `agent.modules.receipts` namespace
 
 ## Usage
-
-### Sending a media file
-
-![](./doc/diagrams/sender.png)
-
-### Receiving a media file
-
-![](./doc/diagrams/recipient.png)
 
 > **TODO**
