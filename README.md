@@ -1,5 +1,5 @@
 
-# Aries JavaScript Message Receipts plug-in
+# Message Receipts plug-in for Aries Framework JavaScript
 
 This module is used to provide an Aries Agent built with Aries Framework JavaScript means to manage [Message Receipts protocol](https://github.com/2060-io/aries-rfcs/tree/feature/receipts/features/xxxx-receipts).
 

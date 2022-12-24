@@ -1,5 +1,5 @@
 {
-  "name": "aries-javascript-receipts",
+  "name": "aries-framework-receipts",
   "version": "0.0.0",
   "description": "Message Receipts protocol implementation for @aries-framework/core",
   "author": "2060.io",
