@@ -1,5 +1,12 @@
 import { agentDependencies } from '@aries-framework/node'
-import { Agent, ConnectionRecord, ConsoleLogger, DidExchangeState, EncryptedMessage, LogLevel } from '@aries-framework/core'
+import {
+  Agent,
+  ConnectionRecord,
+  ConsoleLogger,
+  DidExchangeState,
+  EncryptedMessage,
+  LogLevel,
+} from '@aries-framework/core'
 import { v4 as uuid } from 'uuid'
 import { filter, firstValueFrom, map, ReplaySubject, Subject, timeout } from 'rxjs'
 import { ReceiptsModule } from '../src/ReceiptsModule'
@@ -115,17 +122,19 @@ describe('receipts test', () => {
       )
     )
 
-    await bobAgent.modules.receipts.send({ connectionId: bobConnectionRecord!.id,
-      receipts: [{messageId: 'messageId', state: MessageState.Received }]
-     })
+    await bobAgent.modules.receipts.send({
+      connectionId: bobConnectionRecord!.id,
+      receipts: [{ messageId: 'messageId', state: MessageState.Received }],
+    })
 
-     
     const receipts = await receiptsReceivedPromise
 
     expect(receipts.length).toEqual(1)
-    expect(receipts[0]).toEqual(expect.objectContaining({
-      messageId: 'messageId',
-      state: MessageState.Received
-    }))
+    expect(receipts[0]).toEqual(
+      expect.objectContaining({
+        messageId: 'messageId',
+        state: MessageState.Received,
+      })
+    )
   })
 })
