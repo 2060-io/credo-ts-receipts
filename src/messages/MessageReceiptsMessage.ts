@@ -1,6 +1,6 @@
 import { AgentMessage, IsValidMessageType, parseMessageType } from '@aries-framework/core'
 import { IsArray, IsInstance, IsString, IsDate, IsEnum, ValidateNested } from 'class-validator'
-import { Expose, Type } from 'class-transformer'
+import { Expose, Transform, TransformationType, Type } from 'class-transformer'
 
 export enum MessageState {
   Created = 'created',
@@ -29,12 +29,19 @@ export class MessageReceipt {
   @IsString()
   public messageId!: string
 
-  @Expose()
   @IsEnum(MessageState)
   public state!: MessageState
 
-  @Expose()
-  @Type(() => Date)
+  @Transform(({ value, type }) => {
+    if (type === TransformationType.CLASS_TO_PLAIN) {
+      console.log(`class to plain: ${value}`)
+      return Math.floor(value.getTime() / 1000)
+    }
+
+    if (type === TransformationType.PLAIN_TO_CLASS) {
+      return new Date(value * 1000)
+    }
+  })
   @IsDate()
   public timestamp!: Date
 }
@@ -56,7 +63,7 @@ export class MessageReceiptsMessage extends AgentMessage {
 
   @IsValidMessageType(MessageReceiptsMessage.type)
   public readonly type = MessageReceiptsMessage.type.messageTypeUri
-  public static readonly type = parseMessageType('https://2060.io/didcomm/receipts/0.1/message-receipts')
+  public static readonly type = parseMessageType('https://didcomm.org/receipts/1.0/message-receipts')
 
   @Expose()
   @Type(() => MessageReceipt)

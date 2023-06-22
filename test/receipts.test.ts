@@ -1,4 +1,7 @@
 import { agentDependencies } from '@aries-framework/node'
+import { AskarModule } from '@aries-framework/askar'
+import { ariesAskar } from '@hyperledger/aries-askar-nodejs'
+
 import {
   Agent,
   ConnectionRecord,
@@ -8,7 +11,7 @@ import {
   LogLevel,
 } from '@aries-framework/core'
 import { v4 as uuid } from 'uuid'
-import { filter, firstValueFrom, map, ReplaySubject, Subject, timeout } from 'rxjs'
+import { filter, firstValueFrom, map, Subject, timeout } from 'rxjs'
 import { ReceiptsModule } from '../src/ReceiptsModule'
 import { SubjectOutboundTransport } from './transport/SubjectOutboundTransport'
 import { SubjectInboundTransport } from './transport/SubjectInboundTransport'
@@ -52,7 +55,7 @@ describe('receipts test', () => {
         logger,
       },
       dependencies: agentDependencies,
-      modules: { receipts: new ReceiptsModule() },
+      modules: { askar: new AskarModule({ ariesAskar }), receipts: new ReceiptsModule() },
     })
 
     aliceAgent.registerOutboundTransport(new SubjectOutboundTransport(subjectMap))
@@ -68,7 +71,7 @@ describe('receipts test', () => {
         logger,
       },
       dependencies: agentDependencies,
-      modules: { receipts: new ReceiptsModule() },
+      modules: { askar: new AskarModule({ ariesAskar }), receipts: new ReceiptsModule() },
     })
 
     bobAgent.registerOutboundTransport(new SubjectOutboundTransport(subjectMap))

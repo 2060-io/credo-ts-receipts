@@ -21,7 +21,7 @@ export class ReceiptsModule implements Module {
     // Feature Registry
     featureRegistry.register(
       new Protocol({
-        id: 'https://2060.io/didcomm/receipts/0.1',
+        id: 'https://didcomm.org/receipts/1.0',
       })
     )
   }

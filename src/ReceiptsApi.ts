@@ -2,7 +2,6 @@ import {
   AriesFrameworkError,
   ConnectionService,
   injectable,
-  Dispatcher,
   MessageSender,
   AgentContext,
   OutboundMessageContext,
@@ -20,7 +19,6 @@ export class ReceiptsApi {
 
   public constructor(
     agentContext: AgentContext,
-    dispatcher: Dispatcher,
     messageSender: MessageSender,
     receiptsService: ReceiptsService,
     connectionService: ConnectionService
@@ -29,7 +27,7 @@ export class ReceiptsApi {
     this.messageSender = messageSender
     this.receiptsService = receiptsService
     this.connectionService = connectionService
-    this.registerHandlers(dispatcher)
+    this.agentContext.dependencyManager.registerMessageHandlers([new MessageReceiptsHandler(this.receiptsService)])
   }
 
   // FIXME: Only send message receipts to connections supporting message receipts protocol and also with a "receipt-required" decorator (TODO in AFJ)
@@ -47,9 +45,5 @@ export class ReceiptsApi {
     await this.messageSender.sendMessage(
       new OutboundMessageContext(message, { agentContext: this.agentContext, connection })
     )
-  }
-
-  private registerHandlers(dispatcher: Dispatcher) {
-    dispatcher.registerMessageHandler(new MessageReceiptsHandler(this.receiptsService))
   }
 }
