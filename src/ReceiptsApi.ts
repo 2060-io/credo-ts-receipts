@@ -6,8 +6,8 @@ import {
   AgentContext,
   OutboundMessageContext,
 } from '@aries-framework/core'
-import { MessageReceiptsHandler } from './handlers'
-import { MessageReceipt, MessageReceiptOptions } from './messages'
+import { MessageReceiptsHandler, RequestReceiptsHandler } from './handlers'
+import { MessageReceipt, MessageReceiptOptions, RequestedReceipt, RequestedReceiptOptions } from './messages'
 import { ReceiptsService } from './services'
 
 @injectable()
@@ -27,10 +27,12 @@ export class ReceiptsApi {
     this.messageSender = messageSender
     this.receiptsService = receiptsService
     this.connectionService = connectionService
-    this.agentContext.dependencyManager.registerMessageHandlers([new MessageReceiptsHandler(this.receiptsService)])
+    this.agentContext.dependencyManager.registerMessageHandlers([
+      new MessageReceiptsHandler(this.receiptsService),
+      new RequestReceiptsHandler(this.receiptsService),
+    ])
   }
 
-  // FIXME: Only send message receipts to connections supporting message receipts protocol and also with a "receipt-required" decorator (TODO in AFJ)
   public async send(options: { connectionId: string; receipts: MessageReceiptOptions[] }) {
     const connection = await this.connectionService.findById(this.agentContext, options.connectionId)
 
@@ -40,6 +42,22 @@ export class ReceiptsApi {
 
     const message = await this.receiptsService.createReceiptsMessage({
       receipts: options.receipts.map((item) => new MessageReceipt(item)),
+    })
+
+    await this.messageSender.sendMessage(
+      new OutboundMessageContext(message, { agentContext: this.agentContext, connection })
+    )
+  }
+
+  public async request(options: { connectionId: string; requestedReceipts: RequestedReceiptOptions[] }) {
+    const connection = await this.connectionService.findById(this.agentContext, options.connectionId)
+
+    if (!connection) {
+      throw new AriesFrameworkError(`Connection not found with id ${options.connectionId}`)
+    }
+
+    const message = await this.receiptsService.createRequestReceiptsMessage({
+      requestedReceipts: options.requestedReceipts.map((item) => new RequestedReceipt(item)),
     })
 
     await this.messageSender.sendMessage(

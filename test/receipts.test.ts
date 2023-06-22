@@ -16,7 +16,7 @@ import { ReceiptsModule } from '../src/ReceiptsModule'
 import { SubjectOutboundTransport } from './transport/SubjectOutboundTransport'
 import { SubjectInboundTransport } from './transport/SubjectInboundTransport'
 import { MessageState } from '../src/messages'
-import { MessageReceiptsReceivedEvent, ReceiptsEventTypes } from '../src/services'
+import { MessageReceiptsReceivedEvent, ReceiptsEventTypes, RequestReceiptsReceivedEvent } from '../src/services'
 
 const logger = new ConsoleLogger(LogLevel.info)
 
@@ -137,6 +137,31 @@ describe('receipts test', () => {
       expect.objectContaining({
         messageId: 'messageId',
         state: MessageState.Received,
+      })
+    )
+  })
+
+  test('Request receipts', async () => {
+    const receiptsReceivedPromise = firstValueFrom(
+      aliceAgent.events.observable<RequestReceiptsReceivedEvent>(ReceiptsEventTypes.RequestReceiptsReceived).pipe(
+        filter((event: RequestReceiptsReceivedEvent) => event.payload.connectionId === aliceConnectionRecord.id),
+        map((event: RequestReceiptsReceivedEvent) => event.payload.requestedReceipts),
+        timeout(5000)
+      )
+    )
+
+    await bobAgent.modules.receipts.request({
+      connectionId: bobConnectionRecord!.id,
+      requestedReceipts: [{ messageType: 'messageType', states: [MessageState.Viewed, MessageState.Received] }],
+    })
+
+    const receipts = await receiptsReceivedPromise
+
+    expect(receipts.length).toEqual(1)
+    expect(receipts[0]).toEqual(
+      expect.objectContaining({
+        messageType: 'messageType',
+        states: [MessageState.Viewed, MessageState.Received],
       })
     )
   })

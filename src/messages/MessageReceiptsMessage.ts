@@ -1,14 +1,7 @@
 import { AgentMessage, IsValidMessageType, parseMessageType } from '@aries-framework/core'
 import { IsArray, IsInstance, IsString, IsDate, IsEnum, ValidateNested } from 'class-validator'
 import { Expose, Transform, TransformationType, Type } from 'class-transformer'
-
-export enum MessageState {
-  Created = 'created',
-  Submitted = 'submitted',
-  Received = 'received',
-  Viewed = 'viewed',
-  Deleted = 'deleted',
-}
+import { MessageState } from './MessageState'
 
 export interface MessageReceiptOptions {
   messageId: string
@@ -65,7 +58,6 @@ export class MessageReceiptsMessage extends AgentMessage {
   public readonly type = MessageReceiptsMessage.type.messageTypeUri
   public static readonly type = parseMessageType('https://didcomm.org/receipts/1.0/message-receipts')
 
-  @Expose()
   @Type(() => MessageReceipt)
   @IsArray()
   @ValidateNested()

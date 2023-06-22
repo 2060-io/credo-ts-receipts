@@ -1,8 +1,9 @@
 import { BaseEvent } from '@aries-framework/core'
-import { MessageReceipt } from '../messages'
+import { MessageReceipt, RequestedReceipt } from '../messages'
 
 export enum ReceiptsEventTypes {
   MessageReceiptsReceived = 'MessageReceiptsReceived ',
+  RequestReceiptsReceived = 'RequestReceiptsReceived ',
 }
 
 export interface MessageReceiptsReceivedEvent extends BaseEvent {
@@ -10,5 +11,13 @@ export interface MessageReceiptsReceivedEvent extends BaseEvent {
   payload: {
     connectionId: string
     receipts: MessageReceipt[]
+  }
+}
+
+export interface RequestReceiptsReceivedEvent extends BaseEvent {
+  type: ReceiptsEventTypes.RequestReceiptsReceived
+  payload: {
+    connectionId: string
+    requestedReceipts: RequestedReceipt[]
   }
 }

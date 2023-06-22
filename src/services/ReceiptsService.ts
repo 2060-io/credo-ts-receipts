@@ -1,9 +1,14 @@
 import { Lifecycle, scoped } from 'tsyringe'
 
 import { EventEmitter, MessageHandlerInboundMessage } from '@aries-framework/core'
-import { MessageReceiptsReceivedEvent, ReceiptsEventTypes } from './ReceiptsEvents'
-import { MessageReceiptsHandler } from '../handlers'
-import { MessageReceiptsMessage, MessageReceiptsMessageOptions } from '../messages'
+import { MessageReceiptsReceivedEvent, ReceiptsEventTypes, RequestReceiptsReceivedEvent } from './ReceiptsEvents'
+import { MessageReceiptsHandler, RequestReceiptsHandler } from '../handlers'
+import {
+  MessageReceiptsMessage,
+  MessageReceiptsMessageOptions,
+  RequestReceiptsMessage,
+  RequestReceiptsMessageOptions,
+} from '../messages'
 
 @scoped(Lifecycle.ContainerScoped)
 export class ReceiptsService {
@@ -28,6 +33,25 @@ export class ReceiptsService {
       payload: {
         connectionId: connection.id,
         receipts: message.receipts,
+      },
+    })
+  }
+
+  public async createRequestReceiptsMessage(options: RequestReceiptsMessageOptions) {
+    const message = new RequestReceiptsMessage(options)
+
+    return message
+  }
+
+  public async processRequestReceipts(messageContext: MessageHandlerInboundMessage<RequestReceiptsHandler>) {
+    const { message } = messageContext
+    const connection = messageContext.assertReadyConnection()
+
+    this.eventEmitter.emit<RequestReceiptsReceivedEvent>(messageContext.agentContext, {
+      type: ReceiptsEventTypes.RequestReceiptsReceived,
+      payload: {
+        connectionId: connection.id,
+        requestedReceipts: message.requestedReceipts,
       },
     })
   }
