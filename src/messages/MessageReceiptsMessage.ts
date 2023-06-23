@@ -27,7 +27,6 @@ export class MessageReceipt {
 
   @Transform(({ value, type }) => {
     if (type === TransformationType.CLASS_TO_PLAIN) {
-      console.log(`class to plain: ${value}`)
       return Math.floor(value.getTime() / 1000)
     }
 
