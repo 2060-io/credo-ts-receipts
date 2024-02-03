@@ -2,14 +2,7 @@ import { agentDependencies } from '@credo-ts/node'
 import { AskarModule } from '@credo-ts/askar'
 import { ariesAskar } from '@hyperledger/aries-askar-nodejs'
 
-import {
-  Agent,
-  ConnectionRecord,
-  ConsoleLogger,
-  DidExchangeState,
-  EncryptedMessage,
-  LogLevel,
-} from '@credo-ts/core'
+import { Agent, ConnectionRecord, ConsoleLogger, DidExchangeState, EncryptedMessage, LogLevel } from '@credo-ts/core'
 import { v4 as uuid } from 'uuid'
 import { filter, firstValueFrom, map, Subject, timeout } from 'rxjs'
 import { ReceiptsModule } from '../src/ReceiptsModule'
