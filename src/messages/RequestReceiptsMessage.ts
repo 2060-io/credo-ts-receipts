@@ -1,4 +1,4 @@
-import { AgentMessage, IsValidMessageType, parseMessageType } from '@aries-framework/core'
+import { AgentMessage, IsValidMessageType, parseMessageType } from '@credo-ts/core'
 import { IsArray, IsInstance, IsString, IsEnum, ValidateNested } from 'class-validator'
 import { Expose, Type } from 'class-transformer'
 import { MessageState } from './MessageState'
