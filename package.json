@@ -1,5 +1,5 @@
 {
-  "name": "aries-framework-receipts",
+  "name": "credo-ts-receipts",
   "version": "0.0.0",
   "description": "Message Receipts protocol implementation for @credo-ts/core",
   "author": "2060.io",
