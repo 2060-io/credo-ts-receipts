@@ -1,4 +1,4 @@
-import { BaseEvent } from '@aries-framework/core'
+import { BaseEvent } from '@credo-ts/core'
 import { MessageReceipt, RequestedReceipt } from '../messages'
 
 export enum ReceiptsEventTypes {

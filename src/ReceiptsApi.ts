@@ -1,11 +1,11 @@
 import {
-  AriesFrameworkError,
+  CredoError,
   ConnectionService,
   injectable,
   MessageSender,
   AgentContext,
   OutboundMessageContext,
-} from '@aries-framework/core'
+} from '@credo-ts/core'
 import { MessageReceiptsHandler, RequestReceiptsHandler } from './handlers'
 import { MessageReceipt, MessageReceiptOptions, RequestedReceipt, RequestedReceiptOptions } from './messages'
 import { ReceiptsService } from './services'
@@ -37,7 +37,7 @@ export class ReceiptsApi {
     const connection = await this.connectionService.findById(this.agentContext, options.connectionId)
 
     if (!connection) {
-      throw new AriesFrameworkError(`Connection not found with id ${options.connectionId}`)
+      throw new CredoError(`Connection not found with id ${options.connectionId}`)
     }
 
     const message = await this.receiptsService.createReceiptsMessage({
@@ -53,7 +53,7 @@ export class ReceiptsApi {
     const connection = await this.connectionService.findById(this.agentContext, options.connectionId)
 
     if (!connection) {
-      throw new AriesFrameworkError(`Connection not found with id ${options.connectionId}`)
+      throw new CredoError(`Connection not found with id ${options.connectionId}`)
     }
 
     const message = await this.receiptsService.createRequestReceiptsMessage({

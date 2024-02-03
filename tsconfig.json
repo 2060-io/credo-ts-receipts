@@ -7,7 +7,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "aries-javascript-receipts/*": ["src"]
+      "credo-ts-receipts/*": ["src"]
     },
     "types": ["jest", "node"],
     "watch": true

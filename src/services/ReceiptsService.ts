@@ -1,6 +1,6 @@
 import { Lifecycle, scoped } from 'tsyringe'
 
-import { EventEmitter, MessageHandlerInboundMessage } from '@aries-framework/core'
+import { EventEmitter, MessageHandlerInboundMessage } from '@credo-ts/core'
 import { MessageReceiptsReceivedEvent, ReceiptsEventTypes, RequestReceiptsReceivedEvent } from './ReceiptsEvents'
 import { MessageReceiptsHandler, RequestReceiptsHandler } from '../handlers'
 import {
